@@ -8,7 +8,6 @@ import typing
 from json import JSONDecoder
 from typing import List
 
-from punk.preppy import 
 from punk.preppy import CleanStrings, CleanDates, CleanNumbers
 from d3m.primitive_interfaces.base import PrimitiveBase, CallResult
 
@@ -123,7 +122,7 @@ class datacleaning(PrimitiveBase[Inputs, Outputs, Params, Hyperparams]):
 
 
 if __name__ == '__main__':
-    client = simon(hyperparams={})
+    client = datacleaning(hyperparams={})
     # make sure to read dataframe as string!
     # frame = pandas.read_csv("https://query.data.world/s/10k6mmjmeeu0xlw5vt6ajry05",dtype='str')
     frame = pandas.read_csv("https://s3.amazonaws.com/d3m-data/merged_o_data/o_4550_merged.csv",dtype='str')
