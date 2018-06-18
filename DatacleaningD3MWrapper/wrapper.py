@@ -82,7 +82,8 @@ class datacleaning(PrimitiveBase[Inputs, Outputs, Params, Hyperparams]):
         
     def produce(self, *, inputs: Inputs, timeout: float = None, iterations: int = None) -> CallResult[Outputs]:
         """
-        Produce primitive's best guess for the structural type of each input column.
+        Perform basic cleaning operations on the data, including enforcing consistency of 
+        data and properly handling missing values. 
         
         Parameters
         ----------
@@ -90,15 +91,9 @@ class datacleaning(PrimitiveBase[Inputs, Outputs, Params, Hyperparams]):
 
         Returns
         -------
-        Outputs
-            The outputs is two lists of lists, each has length equal to number of columns in input pandas frame. 
-            Each entry of the first one is a list of strings corresponding to each column's multi-label classification.
-            Each entry of the second one is a list of floats corresponding to prediction probabilities.
-        """
-        
-        """ Accept a pandas data frame, predicts column types in it
-        frame: a pandas data frame containing the data to be processed
-        -> a list of two lists of lists of 1) column labels and then 2) prediction probabilities
+        Outputs : A frame structurally identical to the input frame, with each feature
+            cleaned according to its type (e.g. all date objects will be modified to be
+            of a common structure)
         """
         
         string_cleaner = CleanStrings()
