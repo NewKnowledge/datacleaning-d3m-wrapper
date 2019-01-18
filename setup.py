@@ -1,13 +1,10 @@
 from distutils.core import setup
 
 setup(name='DatacleaningD3MWrapper',
-    version='1.1.0',
+    version='3.01',
     description='A wrapper for running the punk datacleaning functions in the d3m environment.',
     packages=['DatacleaningD3MWrapper'],
-    install_requires=["numpy",
-        "pandas",
-        "requests",
-        "typing",
+    install_requires=["pandas==0.23.4",
         "punk==3.0.0"],
     dependency_links=[
     ],
