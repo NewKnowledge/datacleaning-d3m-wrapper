@@ -1,33 +1,24 @@
 import os.path
-import numpy as np
 import pandas
-import pickle
-import requests
-import ast
-import typing
-from json import JSONDecoder
-from typing import List
 
 from punk.preppy import CleanStrings, CleanDates, CleanNumbers
-from d3m.primitive_interfaces.base import PrimitiveBase, CallResult
+from d3m.primitive_interfaces.transformer import TransformerPrimitiveBase
+from d3m.primitive_interfaces.base import CallResult
 
 from d3m import container, utils
-from d3m.metadata import hyperparams, base as metadata_base, params
+from d3m.metadata import hyperparams, base as metadata_base
+from d3m.primitives.datasets import DatasetToDataFrame
 
 __author__ = 'Distil'
-__version__ = '3.0.0'
+__version__ = '3.0.1'
 
 Inputs = container.pandas.DataFrame
 Outputs = container.pandas.DataFrame
 
-class Params(params.Params):
-    pass
-
-
 class Hyperparams(hyperparams.Hyperparams):
     pass
 
-class datacleaning(PrimitiveBase[Inputs, Outputs, Params, Hyperparams]):
+class datacleaning(TransformerPrimitiveBase[Inputs, Outputs, Hyperparams]):
     metadata = metadata_base.PrimitiveMetadata({
         # Simply an UUID generated once and fixed forever. Generated using "uuid.uuid4()".
         'id': "fc6bf33a-f3e0-3496-aa47-9a40289661bc",
@@ -64,21 +55,6 @@ class datacleaning(PrimitiveBase[Inputs, Outputs, Params, Hyperparams]):
     
     def __init__(self, *, hyperparams: Hyperparams, random_seed: int = 0)-> None:
         super().__init__(hyperparams=hyperparams, random_seed=random_seed)
-                
-        self._decoder = JSONDecoder()
-        self._params = {}
-
-    def fit(self) -> None:
-        pass
-    
-    def get_params(self) -> Params:
-        return self._params
-
-    def set_params(self, *, params: Params) -> None:
-        self.params = params
-
-    def set_training_data(self, *, inputs: Inputs, outputs: Outputs) -> None:
-        pass
         
     def produce(self, *, inputs: Inputs, timeout: float = None, iterations: int = None) -> CallResult[Outputs]:
         """
@@ -115,11 +91,13 @@ class datacleaning(PrimitiveBase[Inputs, Outputs, Params, Hyperparams]):
         except:
             return inputs
 
-
 if __name__ == '__main__':
+    # LOAD DATA AND PREPROCESSING
+    input_dataset = container.Dataset.load('file:///data/home/jgleason/D3m/datasets/seed_datasets_current/196_autoMpg/TRAIN/dataset_TRAIN/datasetDoc.json')
+    ds2df_client = DatasetToDataFrame(hyperparams={"dataframe_resource":"0"})
+    df = ds2df_client.produce(inputs = input_dataset)
+
+    # Data cleaning client
     client = datacleaning(hyperparams={})
-    # make sure to read dataframe as string!
-    # frame = pandas.read_csv("https://query.data.world/s/10k6mmjmeeu0xlw5vt6ajry05",dtype='str')
-    frame = pandas.read_csv("https://s3.amazonaws.com/d3m-data/merged_o_data/o_4550_merged.csv",dtype='str')
-    result = client.produce(inputs = frame)
-    print(result)
+    result = client.produce(inputs = df)
+    print(result.value)
