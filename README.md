@@ -1,4 +1,4 @@
-# Pcafeatures D3M Wrapper
+# Datacleaning D3M Wrapper
 Wrapper of a data cleaning primitive (the base libraries can be found here: https://github.com/NewKnowledge/punk) into D3M infrastructure. All code is written in Python 3.5 and must be run in 3.5 or greater. 
 
 ## Output
