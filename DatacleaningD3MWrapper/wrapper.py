@@ -19,6 +19,10 @@ class Hyperparams(hyperparams.Hyperparams):
     pass
 
 class datacleaning(TransformerPrimitiveBase[Inputs, Outputs, Hyperparams]):
+    """
+        Perform basic cleaning operations on the data, including enforcing consistency of 
+        data and properly handling missing values. 
+    """
     metadata = metadata_base.PrimitiveMetadata({
         # Simply an UUID generated once and fixed forever. Generated using "uuid.uuid4()".
         'id': "fc6bf33a-f3e0-3496-aa47-9a40289661bc",
@@ -58,9 +62,6 @@ class datacleaning(TransformerPrimitiveBase[Inputs, Outputs, Hyperparams]):
         
     def produce(self, *, inputs: Inputs, timeout: float = None, iterations: int = None) -> CallResult[Outputs]:
         """
-        Perform basic cleaning operations on the data, including enforcing consistency of 
-        data and properly handling missing values. 
-        
         Parameters
         ----------
         inputs : Input pandas frame
