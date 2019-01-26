@@ -88,9 +88,9 @@ class datacleaning(TransformerPrimitiveBase[Inputs, Outputs, Hyperparams]):
                 return series
 
         try:
-            return inputs.apply(dtype_apply)
+            return CallResult(inputs.apply(dtype_apply))
         except:
-            return inputs
+            return CallResult(inputs)
 
 if __name__ == '__main__':
     # LOAD DATA AND PREPROCESSING
