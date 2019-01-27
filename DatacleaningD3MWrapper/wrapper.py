@@ -11,6 +11,7 @@ from common_primitives import dataset_to_dataframe
 
 __author__ = 'Distil'
 __version__ = '3.0.1'
+__contact__ = 'mailto:jeffrey.gleason@newknowledge.io'
 
 Inputs = container.pandas.DataFrame
 Outputs = container.pandas.DataFrame
@@ -32,6 +33,7 @@ class datacleaning(TransformerPrimitiveBase[Inputs, Outputs, Hyperparams]):
         'keywords': ['Clean data values in data frame'],
         'source': {
             'name': __author__,
+            'contact': __contact__,
             'uris': [
                 # Unstructured URIs.
                 "https://github.com/NewKnowledge/datacleaning-d3m-wrapper",
@@ -48,7 +50,7 @@ class datacleaning(TransformerPrimitiveBase[Inputs, Outputs, Hyperparams]):
             ),
         }],
         # The same path the primitive is registered with entry points in setup.py.
-        'python_path': 'd3m.primitives.distil.datacleaning',
+        'python_path': 'd3m.primitives.data_cleaning.data_cleaning.datacleaning',
         # Choose these from a controlled vocabulary in the schema. If anything is missing which would
         # best describe the primitive, make a merge request.
         'algorithm_types': [
