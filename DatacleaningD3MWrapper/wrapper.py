@@ -95,7 +95,7 @@ class datacleaning(TransformerPrimitiveBase[Inputs, Outputs, Hyperparams]):
 if __name__ == '__main__':
     # LOAD DATA AND PREPROCESSING
     input_dataset = container.Dataset.load('file:///data/home/jgleason/D3m/datasets/seed_datasets_current/196_autoMpg/TRAIN/dataset_TRAIN/datasetDoc.json')
-    ds2df_client = DatasetToDataFrame(hyperparams={"dataframe_resource":"0"})
+    ds2df_client = dataset_to_dataframe(hyperparams={"dataframe_resource":"0"})
     df = ds2df_client.produce(inputs = input_dataset)
 
     # Data cleaning client
