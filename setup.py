@@ -10,7 +10,7 @@ setup(name='DatacleaningD3MWrapper',
     ],
     entry_points = {
         'd3m.primitives': [
-            'data_cleaning.data_cleaning.datacleaning = DatacleaningD3MWrapper:datacleaning'
+            'data_cleaning.data_cleaning.Datacleaning = DatacleaningD3MWrapper:datacleaning'
         ],
     },
 )
