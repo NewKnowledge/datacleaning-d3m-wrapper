@@ -7,7 +7,7 @@ from d3m.primitive_interfaces.base import CallResult
 
 from d3m import container, utils
 from d3m.metadata import hyperparams, base as metadata_base
-from d3m.primitives.datasets import DatasetToDataFrame
+from common_primitives import dataset_to_dataframe
 
 __author__ = 'Distil'
 __version__ = '3.0.1'
@@ -88,9 +88,9 @@ class datacleaning(TransformerPrimitiveBase[Inputs, Outputs, Hyperparams]):
                 return series
 
         try:
-            return inputs.apply(dtype_apply)
+            return CallResult(inputs.apply(dtype_apply))
         except:
-            return inputs
+            return CallResult(inputs)
 
 if __name__ == '__main__':
     # LOAD DATA AND PREPROCESSING
