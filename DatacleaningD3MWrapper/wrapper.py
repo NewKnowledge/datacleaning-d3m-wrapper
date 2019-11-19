@@ -7,11 +7,10 @@ from d3m.primitive_interfaces.base import CallResult
 
 from d3m import container, utils
 from d3m.metadata import hyperparams, base as metadata_base
-from common_primitives import dataset_to_dataframe
 
 __author__ = 'Distil'
-__version__ = '3.0.1'
-__contact__ = 'mailto:jeffrey.gleason@newknowledge.io'
+__version__ = '3.0.2'
+__contact__ = 'mailto:jeffrey.gleason@yonder.co'
 
 Inputs = container.pandas.DataFrame
 Outputs = container.pandas.DataFrame
@@ -94,13 +93,3 @@ class datacleaning(TransformerPrimitiveBase[Inputs, Outputs, Hyperparams]):
         except:
             return CallResult(inputs)
 
-if __name__ == '__main__':
-    # LOAD DATA AND PREPROCESSING
-    input_dataset = container.Dataset.load('file:///data/home/jgleason/D3m/datasets/seed_datasets_current/196_autoMpg/TRAIN/dataset_TRAIN/datasetDoc.json')
-    ds2df_client = dataset_to_dataframe(hyperparams={"dataframe_resource":"0"})
-    df = ds2df_client.produce(inputs = input_dataset)
-
-    # Data cleaning client
-    client = datacleaning(hyperparams={})
-    result = client.produce(inputs = df)
-    print(result.value)

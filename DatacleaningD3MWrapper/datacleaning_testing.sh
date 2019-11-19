@@ -1,37 +1,31 @@
-#!/bin/bash -e 
+#!/bin/bash -e
 
-Datasets=('30_personae' '185_baseball' '1491_one_hundred_plants_margin' 'LL0_1100_popularkids' '38_sick' '4550_MiceProtein' '57_hypothyroid' 'LL0_acled_reduced')
-Bools=('True' 'False')
-cd /primitives/v2019.6.7/Distil/d3m.primitives.feature_selection.rffeatures.Rffeatures/3.1.1/pipelines
-mkdir test_pipeline
-mkdir best_pipelines
+Datasets=('30_personae','196_autoMpg','185_baseball','26_radon_seed','38_sick','4550_miceProtein','LL0_207_autoPrice','57_hypothyroid','1491_one_hundred_plants_margin','LL0_acled_reduced','LL0_1100_popularkids')
+
+cd "/src/dataclean/DatacleaningD3MWrapper/"
 
 # create text file to record scores and timing information
-touch scores.txt
-echo "DATASET, SCORE, EXECUTION TIME" >> scores.txt
-cd test_pipeline
+touch pipeline_tests/scores.txt
+echo "DATASET, SCORE, EXECUTION TIME" >> pipeline_tests/scores.txt
 
 for i in "${Datasets[@]}"; do
 
-    # generate and save pipeline + metafile
+    # generate and save pipeline
     python3 "/src/dataclean/DatacleaningD3MWrapper/pipeline.py" $i
 
-    # test and score pipeline
-    start=`date +%s` 
-    python3 -m d3m runtime -d /datasets/ fit-score -m *.meta -p *.json -c scores.csv
+    # test and score pipeline    
+    start=`date +%s`
+    python3 -m d3m runtime -d /datasets/ fit-score -p *.json -i /datasets/seed_datasets_current/$i/TRAIN/dataset_TRAIN/datasetDoc.json -t /datasets/seed_datasets_current/$i/TEST/dataset_TEST/datasetDoc.json -a /datasets/seed_datasets_current/$i/SCORE/dataset_TEST/datasetDoc.json -r /datasets/seed_datasets_current/$i/${i}_problem/problemDoc.json -O ${i}_pipeline_run.yaml -c scores.csv
     end=`date +%s`
     runtime=$((end-start))
-
-    if [ $runtime -lt 3600 ]; then
-    echo "$i took less than 1 hour, evaluating pipeline"
+    
     IFS=, read col1 score col3 col4 < <(tail -n1 scores.csv)
-        echo "$i, $score, $runtime" >> ../scores.txt
-        cp *.meta ../best_pipelines
-        cp *.json ../best_pipelines
-    fi
+        echo "$i, $score, $runtime" >> pipeline_tests/scores.txt
 
     # cleanup temporary file
+    mv *.json pipeline_tests/${i}_pipeline.json
+    mv ${i}_pipeline_run.yaml pipeline_tests/${i}_pipeline_run.yaml
+    cp "/src/dataclean/DatacleaningD3MWrapper/pipeline.py" "/src/dataclean/DatacleaningD3MWrapper/pipeline_tests/${i}_pipeline.py"
     rm *.meta
-    rm *.json
-    rm scores.csv
+    rm scores.csv  
 done
